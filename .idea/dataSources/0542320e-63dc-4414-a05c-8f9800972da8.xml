@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="MySQL - misoten@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="2.6">
+    <schema id="1" name="misoten">
+      <visible>1</visible>
+    </schema>
+    <schema id="2" name="cdcol"/>
+    <schema id="3" name="gallery"/>
+    <schema id="4" name="graftventure"/>
+    <schema id="5" name="information_schema"/>
+    <schema id="6" name="jv34_record"/>
+    <schema id="7" name="mysql"/>
+    <schema id="8" name="performance_schema"/>
+    <schema id="9" name="phpmyadmin"/>
+    <schema id="10" name="piatest"/>
+    <schema id="11" name="project_koide"/>
+    <schema id="12" name="store"/>
+    <schema id="13" name="test"/>
+    <schema id="14" name="webauth"/>
+    <schema id="15" name="wp41"/>
+    <table id="16" parent="1" name="accounts"/>
+    <table id="17" parent="1" name="nodes"/>
+    <column id="18" parent="16" name="id">
+      <mandatory>1</mandatory>
+      <data-type>int(10) unsigned|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="19" parent="16" name="account">
+      <data-type>varchar(255)|0</data-type>
+    </column>
+    <column id="20" parent="16" name="alias">
+      <data-type>varchar(255)|0</data-type>
+    </column>
+    <column id="21" parent="16" name="password">
+      <data-type>varchar(255)|0</data-type>
+    </column>
+    <column id="22" parent="16" name="public">
+      <data-type>varchar(255)|0</data-type>
+    </column>
+    <index id="23" parent="16" name="account">
+      <columns>account</columns>
+      <desc-columns></desc-columns>
+      <unique>1</unique>
+    </index>
+    <index id="24" parent="16" name="alias">
+      <columns>alias</columns>
+      <desc-columns></desc-columns>
+      <unique>1</unique>
+    </index>
+    <key id="25" parent="16" name="PRIMARY">
+      <columns>id</columns>
+      <primary>1</primary>
+    </key>
+    <key id="26" parent="16" name="account">
+      <columns>account</columns>
+      <underlying-index>account</underlying-index>
+    </key>
+    <key id="27" parent="16" name="alias">
+      <columns>alias</columns>
+      <underlying-index>alias</underlying-index>
+    </key>
+    <trigger id="28" parent="16" name="account_trigger">
+      <trig-events>I</trig-events>
+      <trig-turn>BEFORE_ROW</trig-turn>
+    </trigger>
+    <trigger id="29" parent="16" name="root_trigger">
+      <trig-events>I</trig-events>
+      <trig-turn>AFTER_ROW</trig-turn>
+    </trigger>
+    <column id="30" parent="17" name="id">
+      <mandatory>1</mandatory>
+      <data-type>int(10) unsigned|0</data-type>
+      <sequence-identity>1</sequence-identity>
+    </column>
+    <column id="31" parent="17" name="node">
+      <data-type>varchar(255)|0</data-type>
+    </column>
+    <column id="32" parent="17" name="reffer">
+      <data-type>varchar(255)|0</data-type>
+    </column>
+    <column id="33" parent="17" name="represent">
+      <data-type>int(10) unsigned|0</data-type>
+    </column>
+    <column id="34" parent="17" name="content">
+      <data-type>varchar(255)|0</data-type>
+    </column>
+    <index id="35" parent="17" name="node">
+      <columns>node</columns>
+      <desc-columns></desc-columns>
+      <unique>1</unique>
+    </index>
+    <key id="36" parent="17" name="PRIMARY">
+      <columns>id</columns>
+      <primary>1</primary>
+    </key>
+    <key id="37" parent="17" name="node">
+      <columns>node</columns>
+      <underlying-index>node</underlying-index>
+    </key>
+  </database-model>
+</dataSource>

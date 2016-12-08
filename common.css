@@ -1,0 +1,145 @@
+html, body, div
+{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html
+{
+    width: 100%;
+    height: 100%;
+}
+
+body
+{
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.column
+{
+    flex-shrink: 0;
+
+    margin-left: 0;
+    height: 100%;/*
+    overflow: auto;*/
+    overflow: hidden;
+    background-color: #fff;
+    -webkit-transition: margin-right 1s linear;
+    -moz-transition: margin-right 1s linear;
+    -o-transition: margin-right 1s linear;
+    transition: margin-right 1s linear;
+}
+/*
+.column::-webkit-scrollbar
+{
+    display: none;
+}*/
+
+@keyframes anime-ol
+{
+    0%
+    {
+        margin-right: -10em;
+    }
+    100%
+    {
+        margin-right: 0;
+    }
+}
+
+@keyframes anime-table
+{
+    0%
+    {
+        margin-right: -24em;
+    }
+    100%
+    {
+        margin-right: 0;
+    }
+}
+
+.cell
+{
+    border: solid 0.2em #fff;
+    background-color: #fff;
+    color: #fff;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ol
+{
+    width: 10em;
+    animation: anime-ol 1s linear;
+}
+
+.ol.hide
+{
+    margin-right: -10em;
+}
+
+.li, .account
+{
+    height: 3em;
+}
+
+.table
+{
+    width: 24em;
+    animation: anime-table 1s linear;
+}
+
+.table.hide
+{
+    margin-right: -24em;
+}
+
+.tr
+{
+    height: 3em;
+
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
+.td
+{
+    flex-shrink: 0;
+
+    width: 3em;
+    height: 3em;
+}
+
+.exist
+{
+    background-color: #eee;
+    color: #888;
+}
+
+.modal
+{
+    position: absolute;
+    display: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 5%;
+}
+
+.modal form
+{
+    flex-grow: 1;
+    background-color: #fff;
+    padding: 5%;
+}
