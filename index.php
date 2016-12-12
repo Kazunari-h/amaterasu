@@ -7,10 +7,8 @@
         <script src="./common.js" type="text/javascript"></script>
     </head>
     <body>
-        <div class="column ol" id="root">
-        </div>
-        <div id="void">
-        </div>
+        <div class="column ol" id="root"></div>
+        <div id="void"></div>
         <div class="modal" id="login">
             <form>
                 account<input type="text" name="account" />

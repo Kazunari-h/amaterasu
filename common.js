@@ -13,7 +13,25 @@ $.fn.extend
     {
         _each: function (callback)
         {
-            this.each(function ()
+            return this.map(function ()
+            {
+                callback.call($(this));
+            });
+        },
+        __each: function (callback)
+        {
+            return function ()
+            {
+                var args = arguments;
+                return this.map(function ()
+                {
+
+                });
+            }
+        }
+        _map: function (callback)
+        {
+            return $.map(this, function ()
             {
                 callback.call($(this));
             });
@@ -42,10 +60,9 @@ $.fn.extend
         },
         _reflect: function ()
         {
-            console.log(this.attr('id'));
             if(this.hasClass('li') || this.hasClass('td'))
             {
-                var row = nodes[this.attr('id')];
+                var row = nodes[this.data('id')];
                 if(row)
                 {
                     this.text(row['content']).addClass('exist');
@@ -57,13 +74,22 @@ $.fn.extend
             }
             else if(this.hasClass('tr'))
             {
-                this._load(this.attr('id'), 1);
+                this._load();
+            }
+            else if(this.hasClass('ol'))
+            {
+                this._load();
+            }
+            else if(this.hasClass('table'))
+            {
+                this._load();
             }
             return this;
         },
         _data: function (key)
         {
-            return nodes[this.attr('id')][key];
+            var id = this.data('id') || this.data('id');
+            return nodes[id][key];
         },
         _child: function ()
         {
@@ -87,8 +113,13 @@ $.fn.extend
             var suffix = array.slice(dim).join('_');
             for(var i = 0; i < 26; i++)
             {
-                this._child().attr('id', prefix + String.fromCharCode(97 + i) + suffix)._reflect();
+                this._child()._setid(prefix + String.fromCharCode(97 + i) + suffix)._reflect();
             }
+        },
+        _setid: function(id)
+        {
+            this.attr('id', id);
+            this.data('id', id);
         },
         _hide: function ()
         {
@@ -96,11 +127,11 @@ $.fn.extend
             this.find('*').attr('id', null);
             return this;
         },
-        _expand: function (represent)
+        _expand: function ()
         {
             $('.hide').remove();
             var prevAll = this.prevAll();
-            var ret = this._before("<div class='column " + represent + "'>");
+            var ret = this._before("<div class='column'>").data('id', this.data('id')).addClass(this._data('represent'))._reflect();
             prevAll._hide();
             return ret;
         },
@@ -148,7 +179,7 @@ $(function ()
                 {
                     nodes[row['node']] = row;
                 });
-                $('#' + json['position']).attr('id', json['account']).text(json['alias'] || '(未登録)').addClass('exist');
+                $('#' + json['position'])._setid('id', json['account']).text(json['alias'] || '(未登録)').addClass('exist');
             break;
             case 'signup':
             break;
@@ -184,7 +215,7 @@ $(function ()
     {
         if ($(e.target).hasClass('exist'))
         {
-            $(this)._expand($(e.target)._data('represent'))._load($(e.target).attr('id'), $(e.target)._data('dimension'));
+            $(this)._expand();
         }
         else if($(e.target).hasClass('cell'))
         {
