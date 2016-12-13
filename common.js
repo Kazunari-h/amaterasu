@@ -8,6 +8,24 @@ Array.prototype._adjust = function (length)
     return ret;
 };
 
+Function.prototype._each = function (thisArg, args)
+{
+    var _this = this;
+    return thisArg.map(function()
+    {
+        return _this.apply($(this), args);
+    });
+};
+
+Function.prototype._map = function (thisArg, args)
+{
+    var _this = this;
+    return $.map(thisArg, function(val)
+    {
+        return _this.apply($(val), args);
+    });
+};
+
 $.fn.extend
 (
     {
@@ -15,26 +33,39 @@ $.fn.extend
         {
             return this.map(function ()
             {
-                callback.call($(this));
+                return callback.call($(this));
             });
         },
         __each: function (callback)
         {
+            var _this = this;
             return function ()
             {
                 var args = arguments;
-                return this.map(function ()
+                return _this.map(function ()
                 {
-
+                    return callback.apply($(this), args);
                 });
-            }
-        }
+            };
+        },
         _map: function (callback)
         {
-            return $.map(this, function ()
+            return $.map(this, function (val)
             {
-                callback.call($(this));
+                return callback.call($(val));
             });
+        },
+        __map: function (callback)
+        {
+            var _this = this;
+            return function ()
+            {
+                var args = arguments;
+                return $.map(_this, function (val)
+                {
+                    return callback.apply($(val), args);
+                });
+            };
         },
         _append: function (str)
         {
@@ -83,13 +114,21 @@ $.fn.extend
             else if(this.hasClass('table'))
             {
                 this._load();
+                alert(Math.max.apply(null, $.fn.data._map(this.find('.td'), ['ord'])));
             }
             return this;
         },
         _data: function (key)
         {
-            var id = this.data('id') || this.data('id');
-            return nodes[id][key];
+            var row = nodes[this.data('id')];
+            if(row)
+            {
+                return row[key];
+            }
+            else
+            {
+                return null;
+            }
         },
         _child: function ()
         {
@@ -106,20 +145,21 @@ $.fn.extend
                 return this._append('<div class="cell td">');
             }
         },
-        _load: function (id, dim)
+        _load: function ()
         {
-            var array = id.split('_');
-            var prefix = array._adjust(dim).join('_');
-            var suffix = array.slice(dim).join('_');
+            var array = this.data('id').split('_');
+            var prefix = array._adjust(this._data('dimension')).join('_');
+            var suffix = array.slice(this._data('dimension')).join('_');
             for(var i = 0; i < 26; i++)
             {
-                this._child()._setid(prefix + String.fromCharCode(97 + i) + suffix)._reflect();
+                this._child()._setid(prefix + String.fromCharCode(97 + i) + suffix).data('ord', i)._reflect();
             }
         },
         _setid: function(id)
         {
             this.attr('id', id);
             this.data('id', id);
+            return this;
         },
         _hide: function ()
         {
@@ -129,11 +169,8 @@ $.fn.extend
         },
         _expand: function ()
         {
-            $('.hide').remove();
-            var prevAll = this.prevAll();
-            var ret = this._before("<div class='column'>").data('id', this.data('id')).addClass(this._data('represent'))._reflect();
-            prevAll._hide();
-            return ret;
+            var tmp = $("<div class='column'>").data('id', this.data('id')).addClass(this._data('represent'));
+            return tmp;
         },
         _login: function ()
         {
@@ -172,6 +209,8 @@ $(function ()
     conn.onmessage = function (e)
     {
         var json = $.parseJSON(e.data);
+        var node = $('#' + json['data']['node']);
+        var modal = $('.modal');
         switch(json['type'])
         {
             case 'login':
@@ -179,24 +218,25 @@ $(function ()
                 {
                     nodes[row['node']] = row;
                 });
-                $('#' + json['position'])._setid('id', json['account']).text(json['alias'] || '(未登録)').addClass('exist');
+                $('#' + json['position'])._setid(json['account']).text(json['alias'] || '(未登録)').addClass('exist');
             break;
             case 'signup':
+                modal.css('display', 'none');
             break;
             case 'insert':
                 nodes[json['data']['node']] = json['data'];
-                $('#' + json['data']['node'])._reflect();
-                $('.modal').css('display', 'none');
+                node._reflect();
+                modal.css('display', 'none');
             break;
             case 'update':
                 nodes[json['data']['node']] = json['data'];
-                $('#' + json['data']['node']).text();
-                $('.modal').css('display', 'none');
+                node.text();
+                modal.css('display', 'none');
             break;
             case 'delete':
                 nodes[json['data']['node']] = null;
-                $('#' + json['data']['node']).removeClass('exist');
-                $('.modal').css('display', 'none');
+                node.removeClass('exist');
+                modal.css('display', 'none');
             break;
             case 'error':
                 alert(json['message']);
@@ -215,7 +255,10 @@ $(function ()
     {
         if ($(e.target).hasClass('exist'))
         {
-            $(this)._expand();
+            $('.hide').remove();
+            var prevAll = $(this).prevAll();
+            $(this)._before($(e.target)._expand())._reflect();
+            prevAll._hide();
         }
         else if($(e.target).hasClass('cell'))
         {
