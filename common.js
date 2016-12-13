@@ -114,7 +114,7 @@ $.fn.extend
             else if(this.hasClass('table'))
             {
                 this._load();
-                alert(Math.max.apply(null, $.fn.data._map(this.find('.td'), ['ord'])));
+                alert(Math.max.apply(null, $.fn.data._map(this.find('.td.exist'), ['ord'])));
             }
             return this;
         },
@@ -148,8 +148,8 @@ $.fn.extend
         _load: function ()
         {
             var array = this.data('id').split('_');
-            var prefix = array._adjust(this._data('dimension')).join('_');
-            var suffix = array.slice(this._data('dimension')).join('_');
+            var prefix = array._adjust(this._data('dimension') || 1).join('_');
+            var suffix = array.slice(this._data('dimension') || 1).join('_');
             for(var i = 0; i < 26; i++)
             {
                 this._child()._setid(prefix + String.fromCharCode(97 + i) + suffix).data('ord', i)._reflect();
