@@ -169,8 +169,7 @@ $.fn.extend
         },
         _expand: function ()
         {
-            var tmp = $("<div class='column'>").data('id', this.data('id')).addClass(this._data('represent'));
-            return tmp;
+            return $("<div class='column'>").data('id', this.data('id')).addClass(this._data('represent'));
         },
         _login: function ()
         {
