@@ -9,20 +9,21 @@
     <body>
         <div class="column ol" id="root"></div>
         <div id="void"></div>
+        <div id="help"><div><span>help</span></div></div>
         <div class="modal" id="login">
             <form>
                 account<input type="text" name="account" />
                 password<input type="password" name="password" />
-                <input type="submit" name="type" value="login" />
-                <button type="button" class="cancel">cancel</button>
+                <button type="submit" name="type" value="login">login</button>
+                <button type="button" name="type" value="cancel">cancel</button>
             </form>
         </div>
         <div class="modal" id="signup">
             <form>
                 account<input type="text" name="account" />
                 password<input type="password" name="password" />
-                <input type="submit" name="type" value="signup" />
-                <button type="button" class="cancel">cancel</button>
+                <button type="submit" name="type" value="signup">signup</button>
+                <button type="button" name="type" value="cancel">cancel</button>
             </form>
         </div>
         <div class="modal" id="insert">

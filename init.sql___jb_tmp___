@@ -1,0 +1,33 @@
+drop database misoten;
+create database misoten;
+use misoten;
+
+drop user misoten@localhost;
+create user misoten@localhost identified by 'misomisotentenmisotenten';
+grant select, insert, update, delete on misoten.* to misoten;
+
+create table accounts
+(
+    id              int unsigned    primary key auto_increment,
+    account         varchar(255)    unique,
+    alias           varchar(255)    unique,
+    password        varchar(255),
+    public          varchar(255)
+);
+
+create trigger account_trigger before insert on accounts for each row
+set new.account = concat('id-', lpad(hex((select auto_increment from information_schema.tables where table_schema=database() and table_name='accounts')), 8, '0'));
+
+create table nodes
+(
+    id              int unsigned    primary key auto_increment,
+    node            varchar(255)    unique,
+    reffer          varchar(255),
+    represent       varchar(255)    default 'ol',
+    reflect         varchar(255)    default '',
+    dimension       int unsigned    default 1,
+    content         varchar(255)
+);
+
+create trigger root_trigger after insert on accounts for each row
+insert into nodes(node) values(new.account);

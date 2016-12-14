@@ -82,6 +82,12 @@ body
     align-items: center;
 }
 
+.cell:hover
+{
+    background-color: #bbb;
+    color: #fff;
+}
+
 .ol
 {
     width: 10em;
@@ -130,6 +136,40 @@ body
 {
     background-color: #eee;
     color: #888;
+}
+
+#help
+{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border-top: solid 10em rgba(0, 0, 0, 0);
+    border-right: solid 10em #eee;
+    color: #888;
+}
+
+#help:hover
+{
+    border-right: solid 10em #bbb;
+    color: #fff;
+}
+
+#help>div
+{
+    position: absolute;
+    left: 4.5em;
+    bottom: 0;
+    width: 5.5em;
+    height: 5.5em;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#help>div>span
+{
+    font-size: 1.5em;
 }
 
 .modal

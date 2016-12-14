@@ -1,20 +1,13 @@
 var conn;
 var nodes = {};
+var reffersource;
+var reffertype;
 
 Array.prototype._adjust = function (length)
 {
     var ret = this.concat();
     ret.length = length;
     return ret;
-};
-
-Function.prototype._each = function (thisArg, args)
-{
-    var _this = this;
-    return thisArg.map(function()
-    {
-        return _this.apply($(this), args);
-    });
 };
 
 Function.prototype._map = function (thisArg, args)
@@ -93,10 +86,16 @@ $.fn.extend
         {
             if(this.hasClass('li') || this.hasClass('td'))
             {
-                var row = nodes[this.data('id')];
-                if(row)
+                if(nodes[this.data('id')])
                 {
-                    this.text(row['content']).addClass('exist');
+                    if(this.hasClass('designed'))
+                    {
+                        this.text(this._data('content', 'a')).addClass('exist');
+                    }
+                    else
+                    {
+                        this.text(this._data('content')).addClass('exist');
+                    }
                 }
                 else
                 {
@@ -114,13 +113,13 @@ $.fn.extend
             else if(this.hasClass('table'))
             {
                 this._load();
-                alert(Math.max.apply(null, $.fn.data._map(this.find('.td.exist'), ['ord'])));
+                this.addClass('max-' + String.fromCharCode(97 + Math.max.apply(null, $.fn.data._map(this.find('.td.exist'), ['ord']))));
             }
             return this;
         },
-        _data: function (key)
+        _data: function (key, sub)
         {
-            var row = nodes[this.data('id')];
+            var row = nodes[this.data('id') + (sub || '')];
             if(row)
             {
                 return row[key];
@@ -178,6 +177,7 @@ $.fn.extend
         _fill: function (id)
         {
             var _this = this;
+            this.data('id', id);
             $.each(nodes[id], function(key, value)
             {
                 _this.find('[name="' + key + '"]').val(value);
@@ -271,7 +271,19 @@ $(function ()
         {
             if($(e.target).hasClass('exist'))
             {
-                $('#signup')._modal()._fill(nodes[$(e.target).attr('id')]);
+                if(reffersource)
+                {
+                    conn.send(JSON.stringify(
+                    {
+                        type: reffertype,
+                        node: reffersource,
+                        reffer: $(e.target).data('id')
+                    }));
+                }
+                else
+                {
+                    $('#signup')._modal()._fill(nodes[$(e.target).attr('id')]);
+                }
             }
             else
             {
@@ -294,19 +306,24 @@ $(function ()
     $(document).on('click', 'form', function (e)
     {
         e.preventDefault();
-        switch (e.target.type)
+        if(e.target.type == 'submit')
         {
-            case 'submit':
-                var data = {type: e.target.value};
-                $(this).serializeArray().forEach(function (row)
-                {
-                    data[row['name']] = row['value'];
-                });
-                conn.send(JSON.stringify(data));
-            break;
-            case 'button':
-                $('.modal').css('display', 'none');
-            break;
+            var data = {type: e.target.value};
+            $(this).serializeArray().forEach(function (row)
+            {
+                data[row['name']] = row['value'];
+            });
+            conn.send(JSON.stringify(data));
+        }
+        else if(e.target.value == 'cancel')
+        {
+            $('.modal').css('display', 'none');
+        }
+        else if(e.target.value == 'reffer')
+        {
+            reltarget = $(this).data('id');
+            reltype = e.target.value;
+            $('.modal').css('display', 'none');
         }
         return false;
     });
