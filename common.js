@@ -3,6 +3,11 @@ var nodes = {};
 var reffersource;
 var reffertype;
 
+function toast(message)
+{
+    $('#toast').text(message).css('display', 'flex').toggleClass('toggler');
+}
+
 Array.prototype._adjust = function (length)
 {
     var ret = this.concat();
@@ -86,7 +91,7 @@ $.fn.extend
         {
             if(this.hasClass('li') || this.hasClass('td'))
             {
-                if(nodes[this.data('id')])
+                if(this._data('id'))
                 {
                     if(this.hasClass('designed'))
                     {
@@ -222,14 +227,9 @@ $(function ()
             case 'signup':
                 modal.css('display', 'none');
             break;
-            case 'insert':
-                nodes[json['data']['node']] = json['data'];
-                node._reflect();
-                modal.css('display', 'none');
-            break;
             case 'update':
                 nodes[json['data']['node']] = json['data'];
-                node.text();
+                node._reflect();
                 modal.css('display', 'none');
             break;
             case 'delete':
@@ -237,6 +237,10 @@ $(function ()
                 node.removeClass('exist');
                 modal.css('display', 'none');
             break;
+            case 'reffer':
+                nodes[json['data']['node']] = json['data'];
+                node._reflect();
+                break;
             case 'error':
                 alert(json['message']);
             break;
@@ -254,6 +258,8 @@ $(function ()
     {
         if ($(e.target).hasClass('exist'))
         {
+            $(this).find('.cell').removeClass('selected');
+            $(e.target).addClass('selected');
             $('.hide').remove();
             var prevAll = $(this).prevAll();
             $(this)._before($(e.target)._expand())._reflect();
@@ -271,19 +277,7 @@ $(function ()
         {
             if($(e.target).hasClass('exist'))
             {
-                if(reffersource)
-                {
-                    conn.send(JSON.stringify(
-                    {
-                        type: reffertype,
-                        node: reffersource,
-                        reffer: $(e.target).data('id')
-                    }));
-                }
-                else
-                {
-                    $('#signup')._modal()._fill(nodes[$(e.target).attr('id')]);
-                }
+                $('#signup')._modal()._fill($(e.target).attr('id'));
             }
             else
             {
@@ -294,7 +288,22 @@ $(function ()
         {
             if($(e.target).hasClass('exist'))
             {
-                $('#update')._modal()._fill($(e.target).attr('id'));
+                if(reffersource)
+                {
+                    conn.send(JSON.stringify
+                    (
+                        {
+                            type: reffertype,
+                            node: reffersource,
+                            reffer: $(e.target).data('id')
+                        }
+                    ));
+                    $('.reffersource').removeClass('reffersource');
+                }
+                else
+                {
+                    $('#update')._modal()._fill($(e.target).attr('id'));
+                }
             }
             else
             {
@@ -321,10 +330,16 @@ $(function ()
         }
         else if(e.target.value == 'reffer')
         {
-            reltarget = $(this).data('id');
-            reltype = e.target.value;
+            reffersource = $(this).data('id');
+            reffertype = e.target.value;
+            $('#' + $(this).data('id')).addClass('reffersource');
+            toast('参照先を右クリックしてください');
             $('.modal').css('display', 'none');
         }
         return false;
+    });
+    $(document).on('click', '#enhelp', function (e)
+    {
+        $('#help').css('display', 'flex');
     });
 });

@@ -24,15 +24,21 @@ class MisotenPDO extends PDO
         return $this->select('select node, reffer, represent, dimension, content from nodes where node like ?', [$account.'%']);
     }
 
-    public function insertNode($node, $reffer, $represent, $dimension, $content)
+    public function insertNode($node, $represent, $dimension, $content)
     {
-        $id = $this->insert('insert into nodes(node, reffer, represent, dimension, content) values(?, ?, ?, ?, ?)', [$node, $reffer, $represent, $dimension, $content]);
+        $id = $this->insert('insert into nodes(node, represent, dimension, content) values(?, ?, ?, ?)', [$node, $represent, $dimension, $content]);
         return $this->row('select * from nodes where id = ?', [$id]);
     }
 
-    public function updateNode($node, $reffer, $represent, $dimension, $content)
+    public function updateNode($node, $represent, $dimension, $content)
     {
-        $this->update('update nodes set reffer = ?, represent = ?, dimension = ?, content = ? where node = ?', [$reffer, $represent, $dimension, $content, $node]);
+        $this->update('update nodes set represent = ?, dimension = ?, content = ? where node = ?', [$represent, $dimension, $content, $node]);
+        return $this->row('select * from nodes where node = ?', [$node]);
+    }
+
+    public function updateReffer($node, $reffer)
+    {
+        $this->update('update nodes set reffer = ? where node = ?', [$reffer, $node]);
         return $this->row('select * from nodes where node = ?', [$node]);
     }
 

@@ -47,13 +47,18 @@ class Chat implements MessageComponentInterface
                 break;*/
                 case 'insert':
                     $account = substr($json['node'], 0, 11);
-                    $data = $this->pdo->insertNode($json['node'], $json['reffer'], $json['represent'], $json['dimension'], $json['content']);
-                    $this->clients->send($account, json_encode(['type'=>'insert', 'data'=>$data]));
+                    $data = $this->pdo->insertNode($json['node'], $json['represent'], $json['dimension'], $json['content']);
+                    $this->clients->send($account, json_encode(['type'=>'update', 'data'=>$data]));
                 break;
                 case 'update':
                     $account = substr($json['node'], 0, 11);
-                    $data = $this->pdo->updateNode($json['node'], $json['reffer'], $json['represent'], $json['dimension'], $json['content']);
-                    $this->clients->send($account, json_encode(['type'=>'insert', 'data'=>$data]));
+                    $data = $this->pdo->updateNode($json['node'], $json['represent'], $json['dimension'], $json['content']);
+                    $this->clients->send($account, json_encode(['type'=>'update', 'data'=>$data]));
+                break;
+                case 'reffer':
+                    $account = substr($json['node'], 0, 11);
+                    $data = $this->pdo->updateReffer($json['node'], $json['reffer']);
+                    $this->clients->send($account, json_encode(['type'=>'update', 'data'=>$data]));
                 break;
             }
             $this->pdo->commit();

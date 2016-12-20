@@ -9,7 +9,7 @@
     <body>
         <div class="column ol" id="root"></div>
         <div id="void"></div>
-        <div id="help"><div><span>help</span></div></div>
+        <div id="enhelp"><div><span>help</span></div></div>
         <div class="modal" id="login">
             <form>
                 account<input type="text" name="account" />
@@ -29,7 +29,6 @@
         <div class="modal" id="insert">
             <form>
                 <input type="hidden" name="node" />
-                reffer<input type="text" name="reffer" />
                 represent<select name="represent"><option value="ol">リスト</option><option value="table">表</option></select>
                 dimension<select name="dimension"><option value="1">1</option><option value="2">2</option></select>
                 content<input type="text" name="content" />
@@ -40,14 +39,24 @@
         <div class="modal" id="update">
             <form>
                 <input type="hidden" name="node" />
-                reffer<input type="text" name="reffer" />
                 represent<select name="represent"><option value="ol">リスト</option><option value="table">表</option></select>
                 dimension<select name="dimension"><option value="1">1</option><option value="2">2</option></select>
                 content<input type="text" name="content" />
                 <button type="submit" name="type" value="update">update</button>
                 <button type="submit" name="type" value="delete">delete</button>
+                <button type="button" name="type" value="reffer">reffer</button>
+                <input type="text" name="reffer" disabled />
                 <button type="button" name="type" value="cancel">cancel</button>
             </form>
+        </div>
+        <div class="modal" id="help">
+            <form>
+                aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                <button type="button" name="type" value="cancel">cancel</button>
+            </form>
+        </div>
+        <div id="toast">
+            aaaaaa
         </div>
     </body>
 </html>
