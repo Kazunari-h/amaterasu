@@ -2,7 +2,8 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <link href="./common.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="assets/css/common.css">
+        <link rel="stylesheet" href="assets/css/form.css">
         <script src="./jquery.js" type="text/javascript"></script>
         <script src="./common.js" type="text/javascript"></script>
     </head>
