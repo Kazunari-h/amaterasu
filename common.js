@@ -194,6 +194,13 @@ $.fn.extend
             var ret = this.find('form');
             ret[0].reset();
             this.css('display', 'flex');
+            this.find('[name="content"]').focus();
+            return ret;
+        },
+        _hiddenModal: function ()
+        {
+            var ret = this.find('form');
+            ret[0].reset();
             return ret;
         }
     }
@@ -239,8 +246,12 @@ $(function ()
             break;
             case 'reffer':
                 nodes[json['data']['node']] = json['data'];
+                toast('参照しました');
                 node._reflect();
-                break;
+                reffersource = null;
+                reffertype = null;
+                $('.reffersource').removeClass('reffersource');
+            break;
             case 'error':
                 alert(json['message']);
             break;
@@ -267,7 +278,8 @@ $(function ()
         }
         else if($(e.target).hasClass('cell'))
         {
-
+            $('#insert')._hiddenModal().find("[name='node']").val($(e.target).attr('id'));
+            $('#insert').find("[value='insert']").click();
         }
     });
     $(document).on('contextmenu', '.column', function (e)
@@ -298,7 +310,6 @@ $(function ()
                             reffer: $(e.target).data('id')
                         }
                     ));
-                    $('.reffersource').removeClass('reffersource');
                 }
                 else
                 {

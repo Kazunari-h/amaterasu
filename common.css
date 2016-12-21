@@ -79,15 +79,57 @@ body
     align-items: center;
 }
 
-.cell:hover, .cell.exist.selected
+.cell:hover
 {
-    background-color: #bbb;
+    background-color: #eee;
+    color: #fff;
+}
+
+.exist
+{
+    background-color: #eee;
+    color: #888;
+}
+
+.exist:hover
+{
+    background-color: #888;
+    color: #fff;
+}
+
+.account.exist
+{
+    background-color: #ddf;
+    color: #66a;
+}
+
+.account.exist:hover
+{
+    background-color: #66a;
+    color: #fff;
+}
+
+.exist.selected
+{
+    background-color: #cfc;
+    color: #6a6;
+}
+
+.exist.selected:hover
+{
+    background-color: #6a6;
     color: #fff;
 }
 
 .cell.reffersource
 {
-    background-color: #a88;
+    background-color: #fcc;
+    color: #a66;
+}
+
+.cell.reffersource:hover
+{
+    background-color: #a66;
     color: #fff;
 }
 
@@ -133,12 +175,6 @@ body
 
     width: 3em;
     height: 3em;
-}
-
-.exist
-{
-    background-color: #eee;
-    color: #888;
 }
 
 #enhelp

@@ -58,7 +58,7 @@ class Chat implements MessageComponentInterface
                 case 'reffer':
                     $account = substr($json['node'], 0, 11);
                     $data = $this->pdo->updateReffer($json['node'], $json['reffer']);
-                    $this->clients->send($account, json_encode(['type'=>'update', 'data'=>$data]));
+                    $this->clients->send($account, json_encode(['type'=>'reffer', 'data'=>$data]));
                 break;
             }
             $this->pdo->commit();

@@ -45,6 +45,7 @@
                 <button type="submit" name="type" value="update">update</button>
                 <button type="submit" name="type" value="delete">delete</button>
                 <button type="button" name="type" value="reffer">reffer</button>
+                <button type="button" name="type" value="reffer">reffer</button>
                 <input type="text" name="reffer" disabled />
                 <button type="button" name="type" value="cancel">cancel</button>
             </form>
