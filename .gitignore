@@ -1,2 +1,5 @@
 pdoLocal.php
 init.sql
+
+# node_modules
+node_modules/
